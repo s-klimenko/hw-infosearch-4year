@@ -14,7 +14,7 @@ def text_to_list(text, m):
     :rtype: list
     '''
     punct = punctuation
-    punct += '—'
+    punct += "0123456789–—«»`'"
     stop_words = stopwords.words('russian')
     lemmas = m.lemmatize(text)
     text = ''.join(lemmas)
