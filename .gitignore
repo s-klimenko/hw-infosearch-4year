@@ -3,3 +3,8 @@
 1.txt
 2.txt
 result.txt
+geckodriver.log
+corpus/
+corpus.py
+doc_info.json
+result.json
