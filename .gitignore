@@ -8,3 +8,10 @@ corpus/
 corpus.py
 doc_info.json
 result.json
+/get_rid_of_dubs.py
+/doubles.txt
+/klimenko_corpus.rar
+/result_2.json
+/result_1.json
+/rewrite.json
+/flask_site/
