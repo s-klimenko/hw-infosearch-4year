@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>OCR</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/my_app.css') }}">
+    </head>
+    
+    <body>
+        <div id="container">
+            <div id="header">
+                <h1>Оптическое распознавание символов</h1>
+            </div>
+            <div id="lowheader">
+                <a href="/">На главную</a>
+            </div>
+            <div id="body">
+                <div id="section">
+                    <h2>Что здесь можно делать?</h2>
+                    <p>Получить распознанный машинописный или рукописный текст с картинки по ссылке.</p>
+                </div>
+
+                <div id="section">
+                    <h2>Ограничения</h2>
+                    <p>Размер картинки должен быть не меньше 40 x 40 и не больше 3200 x 3200 пикселей.<br>
+                        Картинка не может быть больше 1200 мегапикселей.<br>
+                        Распознавание рукописного текста, к сожалению, работает только для английского языка.
+                    </p>
+                </div>
+
+                <div id="section">
+                    <form method='post'>
+                        <h2>Ссылка</h2>
+                        <input name="link" placeholder="https://goo.gl/kJR5IG">{{ input }}</input>
+                        <input type="checkbox" name="handwriting" value="true">Рукописный текст</input><br><br>
+                        <input id="myButton" type="submit" value="Отправить">
+                    </form>
+                </div>
+
+                {% if text %}
+                <div id="section">
+                    <h2>Текст с картинки</h2>
+                    <p>{{ text|safe }}</p>
+                </div>
+                {% endif %}
+            </div>
+            <div id="footer">
+                <p>
+                    Cайт на <a href="https://github.com/s-klimenko/hw-python-3year/tree/master/my-app" id="myButton">GitHub</a>
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

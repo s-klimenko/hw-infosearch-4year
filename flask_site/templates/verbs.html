@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>Глагольный анализ текста</title>
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+          google.charts.load('current', {'packages':['treemap'], 'language': 'ru'});
+          google.charts.setOnLoadCallback(drawChart);
+          function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Location',     'Parent', 'Market trade volume (size)', 'Market increase/decrease (color)'],
+              ['Текст',         null,               0,                               0],
+              ['Неглаголы',    'Текст',     {{ all }}-{{ v }},                       0],
+              ['Глаголы',      'Текст',          {{ v }},                            0],
+              ['Переходные',   'Глаголы',         {{ tr }},                           11],
+              ['Непереходные', 'Глаголы',        {{ intr }},                          15],
+            ]);
+
+            var options = {minColor: '#ffbc5e',
+                            maxColor: '#ba7e2a',
+                            headerHeight: 15,
+                            fontColor: 'black',
+                            showScale: true,
+                            'title':'Переходность',
+                            'width':600,
+                            'height':300,
+                            'legend': { position: "none" }};
+
+            var chart = new google.visualization.TreeMap(document.getElementById('chart_div'));
+            chart.draw(data, options);
+              
+            var data1 = google.visualization.arrayToDataTable([
+              ['Location',           'Parent', 'Market trade volume (size)', 'Market increase/decrease (color)'],
+              ['Текст',                null,               0,                               0],
+              ['Неглаголы',           'Текст',     {{ all }}-{{ v }},                       0],
+              ['Глаголы',             'Текст',          {{ v }},                            0],
+              ['Совершенный вид',    'Глаголы',         {{ s }},                           11],
+              ['Несовершенный вид',  'Глаголы',         {{ ns }},                          15],
+            ]);
+
+            var options1 = {minColor: '#ffbc5e',
+                            maxColor: '#ba7e2a',
+                            headerHeight: 15,
+                            fontColor: 'black',
+                            showScale: true,
+                            'title':'Вид',
+                            'width':600,
+                            'height':300,
+                            'legend': { position: "none" }};
+
+            var chart1 = new google.visualization.TreeMap(document.getElementById('chart_div1'));
+            chart1.draw(data1, options1);
+          }
+        </script>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/my_app.css') }}">
+
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                <h1>Глагольный анализ текста</h1>
+            </div>
+            
+            <div id="lowheader">
+                <a href="/">На главную</a>
+            </div>
+            <div id="body">
+                <div id="section">
+                    <h2>Что здесь можно делать?</h2>
+                    <p>
+                        Узнать, сколько всего слов в тексте, сколько глаголов и какова их доля в тексте.<br>
+                        Узнать, сколько переходных, сколько непереходных глаголов, сколько глаголов совершенного и несовершенного вида.<br>
+                        Получить список всех глагольных лемм в порядке убывания их частотности.
+                    </p>
+                </div>
+                <div id="section">
+                    <form method='post'>
+                        <h2>Ваш текст</h2>
+                        <textarea rows="4" cols="50" name="text" placeholder="Место для текста">{{ input }}</textarea>
+                        <br>
+                        <input id="myButton" type="submit" value="Разобрать">
+                    </form>
+                </div>
+
+
+                {% if all %}
+                <div id="section">
+                    <h2>Результаты:</h2>
+                    <p>
+                        В тексте слов: {{ all }}<br>
+                        Из них глаголов: {{ v }}<br>
+                        Доля глаголов: {{ ratio }}<br>
+                        Переходных глаголов: {{ tr }}<br>
+                        Непереходных глаголов: {{ intr }}<br>
+                        <div id="chart_div"></div>
+                        Глаголов совершенного вида: {{ s }}<br>
+                        {% if amb != 0 %}
+                            Глаголов, вид которых не удалось определить: {{ amb }}<br>
+                        {% endif %}
+                        Глаголов несовершенного вида: {{ ns }}<br>
+                        <div id="chart_div1"></div>
+                        Леммы в порядке убывания:
+                        {% for lemm, value in lemms.items() %}
+                            <li>
+                                {{ lemm }}: {{ value }}
+                                {% if (value|string|list|last == '2' and value|string|list|last != '12') 
+                                or (value|string|list|last == '3' and value|string|list|last != '13') 
+                                or (value|string|list|last == '4' and value|string|list|last != '14') %} раза
+                                {% else %}раз
+                                {% endif %}</li>
+
+                        {% endfor %}
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+            <div id="footer">
+                <p>
+                    Cайт на <a href="https://github.com/s-klimenko/hw-python-3year/tree/master/my-app" id="myButton">GitHub</a>
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

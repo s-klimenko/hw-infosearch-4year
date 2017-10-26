@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корпус газеты «Наша жизнь»</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/my_app.css') }}">
+</head>
+	<body>
+		<div id="container">
+			<div id="header">
+				<h1>Корпус газеты «Наша жизнь»</h1>
+			</div>
+			<div id="lowheader">
+                <a href="/">На главную</a>
+            </div>
+            <div id="body">
+                
+                <div id="section">
+					<h2>Что здесь можно делать?</h2>
+					<p>На это странице находится корпус статей газеты <a href="https://ngisnrj.ru">«Наша жизнь»</a> (Ракитянский и Краснояружский районы Белгородской области).<br>
+                        Вы можете ввести интересующий вас запрос (слово или словосочетание) в форме ниже и получить список из 10 наиболее подходящих статей, упорядоченных по релевантности при помощи функции ранжирования <a href="https://ru.wikipedia.org/wiki/Okapi_BM25">Okapi BM25</a></p>
+                </div>
+                
+                <div id="section">
+					<form method='post'>
+                        <h2>Поисковой запрос</h2>
+                        <input name="query" placeholder="Новый год и Рождество">{{ input }}</input>
+                        <br><br>
+                        <input id="myButton" type="submit" value="Отправить">
+                    </form>
+				</div>
+				
+				{% if response == 0 %}
+
+				<div id="section">
+					<h2>Результаты по запросу <i>{{ query }}</i>:</h2>
+					<p>Простите, по вашему запросу ничего нет :( Попробуйте перефразировать.<br></p>
+				</div>
+
+				{% elif response %}
+
+				<div id="section">
+					<h2>Результаты по запросу <i>{{ query }}</i>:</h2>
+                    {% for link, score in response.items() %}
+					<p>{{ link | safe }} - <b>{{ score }}</b><br></p>
+                    {% endfor %}
+				</div>
+
+				{% endif %}
+                
+			</div>
+			<div id="footer">
+				<p>
+					Cайт на <a href="https://github.com/s-klimenko/hw-infosearch-4year/flask_site" id="myButton">GitHub</a>
+				</p>
+			</div>
+		</div>
+	</body>
+</html>

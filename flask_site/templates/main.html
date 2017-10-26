@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/my_app.css') }}">
+
+</head>
+    <body>
+        <div id="container">
+            <div id="header">
+                <h1>Сайт</h1>
+            </div>
+            <div id="lowheader">
+                <a href="/">На главную</a>
+            </div>
+            <div id="body">
+                <div id="section">
+                    <h1>Привет!</h1>
+                    <p>Этот сайт выполнен <b>Клименко Светой</b>
+                        в рамках курса <b>"Программирование Python 2016-2017"</b>.</p>
+                    <p><b>New!</b> Добавлена страница корпуса, выполненного
+                        в рамках курса <b>"Программирование и информационный поиск&nbsp;2017-2018"</b>.</p>
+                    <p>Список страниц на этом сайте:</p>
+                    <ul>
+                        {% for name, url in urls.items() %}
+                        <li><a href="{{ url }}">{{ name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div id="footer">
+                <p>    
+                    Cайт на <a href="https://github.com/s-klimenko/hw-python-3year/tree/master/my-app" id="myButton">GitHub</a>
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

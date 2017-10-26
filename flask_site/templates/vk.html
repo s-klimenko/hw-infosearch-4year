@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>Анализатор ВКонтакте</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/my_app.css') }}">
+
+         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart'], 'language': 'ru'});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Лемма');
+            data.addColumn('number', 'Количество');
+            data.addRows([
+              {% for lemm, value in data.items() %}
+                  ['{{ lemm }}', {{ value }}],
+              {% endfor %}
+            ]);
+
+            var options = {'title':'Частотные леммы',
+                           'width':600,
+                           'height':300,
+                            'legend': { position: "none" }};
+
+            var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+          }
+        </script>
+    </head>
+
+    <body>
+        <div id="container">
+            <div id="header">
+                <h1>Анализатор содержания постов ВКонтакте</h1>
+            </div>
+            <div id="lowheader">
+                    <a href="/">На главную</a>
+                </div>
+            <div id="body">
+                <div id="section">
+                    <h2>Что здесь можно делать?</h2>
+                    <p>Ввести ID или короткое имя открытого сообщества или паблика и получить список самых частотных слов.<p>
+                </div>
+
+                <div id="section">
+                    <form method='post'>
+                        <h2>ID или имя</h2>
+                        <input name="id" placeholder="strofes">{{ input }}</input>
+                        <br><br>
+                        <input id="myButton" type="submit" value="Отправить">
+                    </form>
+                </div>
+
+                {% if error == False %}
+                <div id="section">
+                    <h2>Результаты:</h2>
+                    <div id="divider_left">
+                    <p>
+                        {% for lemm, value in lemms.items() %}
+                            <li>{{ lemm }}: {{ value }}
+                            {% if (value|string|list|last == '2' and value|string|list|last != '12') 
+                            or (value|string|list|last == '3' and value|string|list|last != '13') 
+                            or (value|string|list|last == '4' and value|string|list|last != '14') %} раза
+                            {% else %}раз
+                            {% endif %}</li>
+                    </p>
+                    {% endfor %}
+                        </div>
+                    <div id="divider_right">
+                    <div id="chart_div"></div>
+                        </div>
+                    <br style="clear:both;"/>
+                </div>
+
+                {% elif error == True %}
+                <div id="section">
+                    <h2>Упс!</h2>
+                    <p>{{ error_text }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <div id="footer">
+                    <p>
+                        Cайт на <a href="https://github.com/s-klimenko/hw-python-3year/tree/master/my-app" id="myButton">GitHub</a>
+                    </p>
+            </div>
+        </div>
+ 
+    </body>
+</html>
